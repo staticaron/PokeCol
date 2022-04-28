@@ -31,8 +31,6 @@ class PokeCol(commands.Bot):
 
     async def on_ready(self):
         print("Logged in as {}".format(self.user))
-        print(config.PREFIX)
-
 
     async def on_message(self, message:Message):
 

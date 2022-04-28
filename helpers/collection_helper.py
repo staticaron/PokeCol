@@ -247,19 +247,20 @@ async def get_collector_show_embed(pokemon:str, user:Member=None) -> Embed:
 
         collectors = data["users"]
 
-        embd = Embed(title=f"{pokemon.capitalize()}'s Collectors", color=NORMAL_COLOR)
+        embd = Embed(title=f"{pokemon.capitalize()}'s Collectors", color=NORMAL_COLOR, description="")
 
         for collector in collectors:
-            embd.description += f"<@{collector} | "
+            embd.description += f"<@{collector}> | "
 
         if user is not None:
             if str(user.id) in collectors:
-                embd.set_footer("You are collecting this Pokemon.")
+                embd.set_footer(text="You are collecting this Pokemon.")
             else:
-                embd.description("You are not collecting this Pokemon.")
+                embd.set_footer(text="You are not collecting this Pokemon.")
 
         return embd
 
-    except:
+    except Exception as e:
+
         if mongo_manager.manager.get_documents_length(COL_COL_NAME, query) <= 0:
-            return Embed(title=f"No Collectors were found for {pokemon.capitalize()}")
+            return Embed(title=f"No Collectors were found for {pokemon.capitalize()}", color=NORMAL_COLOR)

@@ -9,7 +9,7 @@ async def get_paginator_from_list(values:list, max_count_per_page:int=15, headin
 
     curr_count = 0
 
-    embed_pages:list(Embed) = []
+    embed_pages = []
 
     curr_page = Embed(title="{} Page 1".format("" if heading is None else heading + " -"), color=NORMAL_COLOR, description="")
 
@@ -25,7 +25,7 @@ async def get_paginator_from_list(values:list, max_count_per_page:int=15, headin
         curr_page.description += f"{curr_count}. {values[i].capitalize()}\n"
 
     for page in embed_pages:
-        page.set_footer(f"Collection Size : {len(values)}")
+        page.set_footer(text=f"Collection Size : {len(values)}")
 
     return GeneralPaginator(embed_pages)
 

@@ -53,7 +53,7 @@ class CollectionCog(commands.Cog):
     @commands.command(name="cs", description="View collectors of a pokemon without pinging them")
     async def collector_show(self, ctx:commands.Context, pokemon:str):
 
-        reply = await collection_helper.get_collector_show_embed(pokemon)
+        reply = await collection_helper.get_collector_show_embed(pokemon, ctx.author)
 
         await ctx.send(embed=reply)
 
