@@ -2,6 +2,7 @@ from discord.ext import pages
 from discord import Embed
 
 from config import NORMAL_COLOR
+from views.paginators import GeneralPaginator
 
 async def get_paginator_from_list(values:list, max_count_per_page:int=15, heading:str=None) -> pages.Paginator:
 
@@ -22,4 +23,4 @@ async def get_paginator_from_list(values:list, max_count_per_page:int=15, headin
 
         curr_page.description += f"{curr_count}. {values[i].capitalize()}\n"
 
-    return pages.Paginator(embed_pages, loop_pages=True)
+    return GeneralPaginator(embed_pages)
