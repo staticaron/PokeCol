@@ -5,6 +5,7 @@ from managers import mongo_manager
 from managers import cache_manager
 from helpers import general_helper
 from config import USER_COL_NAME, COL_COL_NAME, NORMAL_COLOR, ERROR_COLOR
+import config
 
 async def register_collection(user:Member, pokemon:str) -> str:
 
@@ -34,6 +35,9 @@ async def register_collection(user:Member, pokemon:str) -> str:
         data = cursor[0]
 
         collection = data["col"]
+
+        if len(collection) >= config.MAX:
+            return "You have already reached the maximum collection size."
 
         if pokemon not in collection:
             collection.append(pokemon)

@@ -29,7 +29,7 @@ async def get_paginator_from_list(values:list, max_count_per_page:int=15, headin
 
     return GeneralPaginator(embed_pages)
 
-def get_prefix_and_timer():
+def get_prefix_timer_max():
 
     query = {}
 
@@ -38,17 +38,18 @@ def get_prefix_and_timer():
     try:
         data = cursor[0]
 
-        return [data["prefix"], data["timer"]]
+        return [data["prefix"], data["timer"], data["max"]]
     except:
         if mongo_manager.manager.get_documents_length("server", query) <= 0:
             entry = {
-                "prefix" : ">>",
-                "timer" : "120"
+                "prefix" : ">",
+                "timer" : "120",
+                "max" : "50" 
             }
 
             mongo_manager.manager.add_data("server", entry)
 
-            return [">>", "120"]
+            return [">", "120", "50"]
 
 async def get_prefix():
 

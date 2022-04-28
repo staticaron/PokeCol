@@ -12,15 +12,19 @@ SERVER_COL_NAME = "server"
 
 TIMER=0
 PREFIX=">>"
+MAX=50
 
-def modify_prefix_and_timer(prefix=None, timer=None):
-    global TIMER, PREFIX
+def modify_prefix_timer_max(prefix=None, timer=None, max=None):
+    global TIMER, PREFIX, MAX
 
     if timer is not None:
         TIMER = timer
     
     if prefix is not None:
         PREFIX = prefix
+
+    if max is not None:
+        MAX = max
 
 NORMAL_COLOR = discord.Color.dark_theme()
 ERROR_COLOR = discord.Color.red()

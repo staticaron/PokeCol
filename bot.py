@@ -53,8 +53,9 @@ def main():
     print(db_reply)
 
     """Load Prefix and timer values"""
-    prefix, timer = general_helper.get_prefix_and_timer()
-    config.modify_prefix_and_timer(prefix, timer)
+    prefix, timer, max = general_helper.get_prefix_timer_max()
+
+    config.modify_prefix_timer_max(prefix, int(timer), int(max))
 
     try:
         bot = PokeCol(config.PREFIX)
