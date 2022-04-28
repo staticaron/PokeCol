@@ -212,6 +212,6 @@ async def get_collector_pings(pokemon:str) -> str:
 
         return ping_string
     except:
-        return f"No collectors were found for pokemon **{pokemon.capitalize()}**"
+        return f"No collectors were found for **{pokemon.capitalize()}**"
 
 
