@@ -14,28 +14,40 @@ async def register_collection(user:Member, pokemon:str) -> str:
 
     cursor = mongo_manager.manager.get_all_data(USER_COL_NAME, query)
 
-    data = cursor[0]
-
     """
-    {
-        "user" : "734754644286504991",
-        "col" : [
-            "scizor",
-            "aron"
-        ]
-    }
-    """
+        {
+            "user" : "734754644286504991",
+            "col" : [
+                "scizor",
+                "aron"
+            ]
+        }
+        """
 
-    collection = data["col"]
+    try:
+        data = cursor[0]
 
-    if pokemon not in collection:
-        collection.append(pokemon)
-    else:
-        return "Pokemon is already in your collection list"
+        collection = data["col"]
 
-    updated_data = {"col" : collection}
+        if pokemon not in collection:
+            collection.append(pokemon)
+        else:
+            return "Pokemon is already in your collection list"
 
-    mongo_manager.manager.update_all_data(USER_COL_NAME, query, updated_data)
+        updated_data = {"col" : collection}
+
+        mongo_manager.manager.update_all_data(USER_COL_NAME, query, updated_data)
+    except:
+        if mongo_manager.manager.get_documents_length(USER_COL_NAME, query) <= 0:
+
+            entry = {
+                "user" : str(user.id),
+                "col" : [
+                    pokemon
+                ]
+            }
+
+            mongo_manager.manager.add_data(USER_COL_NAME, entry)
 
     # Update the cols collections
 
@@ -173,7 +185,26 @@ async def get_collection(user:Member) -> pages.Paginator:
         if mongo_manager.manager.get_documents_length(USER_COL_NAME, query) <= 0:
             return None
 
+async def get_collector_pings(pokemon:str) -> str:
 
+    pokemon = pokemon.lower()
 
+    query = {"col" : pokemon}
+
+    cursor = mongo_manager.manager.get_all_data(COL_COL_NAME, query)
+
+    try:
+        data = cursor[0]
+
+        collectors = data["users"]
+
+        ping_string = f"Pinging **{pokemon.capitalize()}**'s collectors \n\n"
+
+        for collector in collectors:
+            ping_string += f"<@{collector}> | "
+
+        return ping_string
+    except:
+        return f"No collectors were found for pokemon **{pokemon.capitalize()}**"
 
 
