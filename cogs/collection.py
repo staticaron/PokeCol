@@ -16,6 +16,15 @@ class CollectionCog(commands.Cog):
 
         await ctx.reply(reply)
 
+    @col.command(name="show", description="View your collection")
+    async def show(self, ctx:commands.Context):
+
+        reply = await collection_helper.get_collection(ctx.author)
+
+        if reply is None:
+            await ctx.reply(f"You don't have collections, add pokemons to your collection using ```{ctx.prefix}col add pokemon```")
+        else:
+            await reply.send(ctx)
 
 def setup(bot:commands.Bot):
     bot.add_cog(CollectionCog())

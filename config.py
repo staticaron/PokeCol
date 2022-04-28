@@ -1,3 +1,4 @@
+import discord
 from os import environ
 
 TOKEN = environ["TOKEN"] # Bot token goes here
@@ -9,3 +10,5 @@ USER_COL_NAME = "users"
 COL_COL_NAME = "tags"
 
 OWNERS = [734754644286504991, 734754644286504991]
+
+NORMAL_COLOR = discord.Color.dark_theme()

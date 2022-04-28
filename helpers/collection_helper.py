@@ -1,7 +1,8 @@
 from discord import Member
+from discord.ext import pages
 
 from managers import mongo_manager
-
+from helpers import general_helper
 from config import USER_COL_NAME, COL_COL_NAME
 
 async def register_collection(user:Member, pokemon:str) -> str:
@@ -79,4 +80,28 @@ async def register_collection(user:Member, pokemon:str) -> str:
             mongo_manager.manager.add_data(COL_COL_NAME, entry)
 
     return f"**{pokemon.capitalize()}** was added to your collection"
+
+async def get_collection(user:Member) -> pages.Paginator:
+
+    MAX_COLLECTION_PER_PAGE = 15
+
+    query = {"user" : str(user.id)}
+
+    cursor = mongo_manager.manager.get_all_data(USER_COL_NAME, query)
+
+    try:
+        data = cursor[0]
+
+        collection = data["col"]
+
+        paginator = await general_helper.get_paginator_from_list(collection, 6, f"{user.name.capitalize()}'s Collection")
+
+        return paginator
+    except:
+        if mongo_manager.manager.get_documents_length(USER_COL_NAME, query) <= 0:
+            return None
+
+
+
+
 
