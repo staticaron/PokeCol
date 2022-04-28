@@ -39,12 +39,23 @@ class CollectionCog(commands.Cog):
         else:
             await reply.send(ctx)
 
+    """Ping the collectors"""
+
     @commands.command(name="cp", description="Pings the collector of a specific pokemon")
     async def collector_ping(self, ctx:commands.Context, pokemon:str):
 
         reply = await collection_helper.get_collector_pings(pokemon)
 
         await ctx.send(reply)
+
+    """View Collectors without pinging them"""
+
+    @commands.command(name="cs", description="View collectors of a pokemon without pinging them")
+    async def collector_show(self, ctx:commands.Context, pokemon:str):
+
+        reply = await collection_helper.get_collector_show_embed(pokemon)
+
+        await ctx.send(embed=reply)
 
 def setup(bot:commands.Bot):
     bot.add_cog(CollectionCog())

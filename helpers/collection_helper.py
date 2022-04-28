@@ -1,10 +1,10 @@
-from discord import Member
+from discord import Member, Embed
 from discord.ext import pages
 
 from managers import mongo_manager
 from managers import cache_manager
 from helpers import general_helper
-from config import USER_COL_NAME, COL_COL_NAME
+from config import USER_COL_NAME, COL_COL_NAME, NORMAL_COLOR, ERROR_COLOR
 
 async def register_collection(user:Member, pokemon:str) -> str:
 
@@ -185,7 +185,7 @@ async def remove_pokemon(user:Member, pokemon:str) -> str:
 
 async def get_collection(user:Member) -> pages.Paginator:
 
-    MAX_COLLECTION_PER_PAGE = 15
+    MAX_COLLECTION_PER_PAGE = 15 
 
     query = {"user" : str(user.id)}
 
@@ -196,7 +196,7 @@ async def get_collection(user:Member) -> pages.Paginator:
 
         collection = data["col"]
 
-        paginator = await general_helper.get_paginator_from_list(collection, 16, f"{user.name.capitalize()}'s Collection")
+        paginator = await general_helper.get_paginator_from_list(collection, MAX_COLLECTION_PER_PAGE + 1, f"{user.name.capitalize()}'s Collection")
 
         return paginator
     except:
@@ -230,4 +230,36 @@ async def get_collector_pings(pokemon:str) -> str:
     except:
         return f"No collectors were found for **{pokemon.capitalize()}**"
 
+async def get_collector_show_embed(pokemon:str, user:Member=None) -> Embed:
+    pokemon = pokemon.lower()
 
+    try:
+        cache_manager.cached_type_data[pokemon]
+    except:
+        return Embed(title="Not a valid Pokemon", color=ERROR_COLOR)
+
+    query = {"col" : pokemon}
+
+    cursor = mongo_manager.manager.get_all_data(COL_COL_NAME, query)
+
+    try:
+        data = cursor[0]
+
+        collectors = data["users"]
+
+        embd = Embed(title=f"{pokemon.capitalize()}'s Collectors", color=NORMAL_COLOR)
+
+        for collector in collectors:
+            embd.description += f"<@{collector} | "
+
+        if user is not None:
+            if str(user.id) in collectors:
+                embd.set_footer("You are collecting this Pokemon.")
+            else:
+                embd.description("You are not collecting this Pokemon.")
+
+        return embd
+
+    except:
+        if mongo_manager.manager.get_documents_length(COL_COL_NAME, query) <= 0:
+            return Embed(title=f"No Collectors were found for {pokemon.capitalize()}")

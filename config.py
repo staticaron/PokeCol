@@ -25,6 +25,7 @@ def modify_prefix_and_timer(prefix=None, timer=None):
 OWNERS = [734754644286504991, 734754644286504991]
 
 NORMAL_COLOR = discord.Color.dark_theme()
+ERROR_COLOR = discord.Color.red()
 
 NEXT_EMOJI = "<:next:964507779765272648>"
 PREV_EMOJI = "<:prev:964508551915634768>"
