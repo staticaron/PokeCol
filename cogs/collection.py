@@ -9,10 +9,17 @@ class CollectionCog(commands.Cog):
         if ctx.subcommand_passed == None:
             await ctx.reply("Please provide a valid sub command")
 
-    @col.command(name="add", description="Add Pokemons to your collection")
+    @col.command(name="add", description="Adds a pokemons to your collection")
     async def add(self, ctx:commands.Context, pokemon:str):
         
         reply = await collection_helper.register_collection(ctx.author, pokemon)
+
+        await ctx.reply(reply)
+
+    @col.command(name="remove", description="Removes a pokemon from your collection")
+    async def remove(self, ctx:commands.Context, pokemon:str):
+
+        reply = await collection_helper.remove_pokemon(ctx.author, pokemon)
 
         await ctx.reply(reply)
 
