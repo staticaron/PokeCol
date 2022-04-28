@@ -124,7 +124,11 @@ async def remove_pokemon(user:Member, pokemon:str) -> str:
 
         updated_data = {"col" : collection}
 
-        mongo_manager.manager.update_all_data(USER_COL_NAME, query, updated_data)
+        if len(collection) <= 0:
+            mongo_manager.manager.remove_all_data(USER_COL_NAME, query)
+        else:
+            mongo_manager.manager.update_all_data(USER_COL_NAME, query, updated_data)
+
     except:
         if mongo_manager.manager.get_documents_length(COL_COL_NAME, query) <= 0:
             return "You don't have any collections :/"
@@ -157,7 +161,10 @@ async def remove_pokemon(user:Member, pokemon:str) -> str:
 
         updated_data = {"users" : users}
 
-        mongo_manager.manager.update_all_data(COL_COL_NAME, query, updated_data)
+        if len(users) <= 0:
+            mongo_manager.manager.remove_all_data(COL_COL_NAME, query)
+        else:
+            mongo_manager.manager.update_all_data(COL_COL_NAME, query, updated_data)
 
     except:
         if mongo_manager.manager.get_documents_length(COL_COL_NAME, query) <= 0:
