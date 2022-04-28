@@ -22,8 +22,6 @@ def modify_prefix_and_timer(prefix=None, timer=None):
     if prefix is not None:
         PREFIX = prefix
 
-OWNERS = [734754644286504991, 734754644286504991]
-
 NORMAL_COLOR = discord.Color.dark_theme()
 ERROR_COLOR = discord.Color.red()
 
