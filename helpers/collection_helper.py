@@ -196,7 +196,7 @@ async def get_collection(user:Member) -> pages.Paginator:
 
         collection = data["col"]
 
-        paginator = await general_helper.get_paginator_from_list(collection, 6, f"{user.name.capitalize()}'s Collection")
+        paginator = await general_helper.get_paginator_from_list(collection, 16, f"{user.name.capitalize()}'s Collection")
 
         return paginator
     except:

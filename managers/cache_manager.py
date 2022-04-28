@@ -2,7 +2,7 @@ import json
 
 cached_type_data = {}
 
-async def cache_data() -> str:
+def cache_data() -> str:
     try:
         global cached_type_data
 

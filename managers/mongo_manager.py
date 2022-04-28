@@ -47,7 +47,7 @@ class MongoManager:
 
 manager = None
 
-async def init_mongo():
+def init_mongo():
     global manager
 
     try:

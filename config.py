@@ -8,15 +8,19 @@ DB_NAME = environ["DB"]
 
 USER_COL_NAME = "users"
 COL_COL_NAME = "tags"
+SERVER_COL_NAME = "server"
 
 TIMER=0
 PREFIX=">>"
 
-def modify_prefix_and_timer(prefix, timer):
+def modify_prefix_and_timer(prefix=None, timer=None):
     global TIMER, PREFIX
 
-    TIMER = timer
-    PREFIX = prefix
+    if timer is not None:
+        TIMER = timer
+    
+    if prefix is not None:
+        PREFIX = prefix
 
 OWNERS = [734754644286504991, 734754644286504991]
 
