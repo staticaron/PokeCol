@@ -3,6 +3,7 @@ from discord import Embed
 
 from config import NORMAL_COLOR
 from views.paginators import GeneralPaginator
+from managers import mongo_manager
 
 async def get_paginator_from_list(values:list, max_count_per_page:int=15, heading:str=None) -> pages.Paginator:
 
@@ -24,3 +25,24 @@ async def get_paginator_from_list(values:list, max_count_per_page:int=15, headin
         curr_page.description += f"{curr_count}. {values[i].capitalize()}\n"
 
     return GeneralPaginator(embed_pages)
+
+async def get_prefix_and_timer():
+
+    query = {}
+
+    cursor = mongo_manager.manager.get_all_data("server", query)
+
+    try:
+        data = cursor[0]
+
+        return [data["prefix"], data["timer"]]
+    except:
+        if mongo_manager.manager.get_documents_length("server", query) <= 0:
+            entry = {
+                "prefix" : ">>",
+                "timer" : "120"
+            }
+
+            mongo_manager.manager.add_data("server", entry)
+
+            return [">>", "120"]

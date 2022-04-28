@@ -9,6 +9,15 @@ DB_NAME = environ["DB"]
 USER_COL_NAME = "users"
 COL_COL_NAME = "tags"
 
+TIMER=0
+PREFIX=">>"
+
+def modify_prefix_and_timer(prefix, timer):
+    global TIMER, PREFIX
+
+    TIMER = timer
+    PREFIX = prefix
+
 OWNERS = [734754644286504991, 734754644286504991]
 
 NORMAL_COLOR = discord.Color.dark_theme()

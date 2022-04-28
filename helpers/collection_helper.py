@@ -2,12 +2,18 @@ from discord import Member
 from discord.ext import pages
 
 from managers import mongo_manager
+from managers import cache_manager
 from helpers import general_helper
 from config import USER_COL_NAME, COL_COL_NAME
 
 async def register_collection(user:Member, pokemon:str) -> str:
 
     pokemon = pokemon.lower()
+
+    try:
+        cache_manager.cached_type_data[pokemon]
+    except:
+        return "This is not a valid Pokemon Name. Only English names are supported as of now." 
 
     # Update the users collections
     query = {"user" : str(user.id)}
@@ -96,6 +102,11 @@ async def register_collection(user:Member, pokemon:str) -> str:
 async def remove_pokemon(user:Member, pokemon:str) -> str:
     
     pokemon = pokemon.lower()
+
+    try:
+        cache_manager.cached_type_data[pokemon]
+    except:
+        return "This is not a valid Pokemon Name. Only English names are supported as of now." 
 
     # Update the users collections
     query = {"user" : str(user.id)}
@@ -195,6 +206,11 @@ async def get_collection(user:Member) -> pages.Paginator:
 async def get_collector_pings(pokemon:str) -> str:
 
     pokemon = pokemon.lower()
+
+    try:
+        cache_manager.cached_type_data[pokemon]
+    except:
+        return "This is not a valid Pokemon Name. Only English names are supported as of now."        
 
     query = {"col" : pokemon}
 

@@ -2,7 +2,10 @@ from discord.ext import commands
 from discord import Intents
 
 from managers import mongo_manager
+from managers import cache_manager
+from helpers import general_helper
 from config import TOKEN
+import config
 
 class PokeCol(commands.Bot):
 
@@ -23,8 +26,18 @@ class PokeCol(commands.Bot):
             self.load_extension(cog)
 
     async def on_ready(self):
+        
+        """Cache static data"""
+        cache_reply = await cache_manager.cache_data()
+        print(cache_reply)
+
+        """Load Mongo Manager"""
         db_reply = await mongo_manager.init_mongo()
         print(db_reply)
+
+        """Load Prefix and timer values"""
+        prefix, timer = await general_helper.get_prefix_and_timer()
+        config.modify_prefix_and_timer(prefix, timer)
 
         print("Logged in as {}".format(self.user))
 
